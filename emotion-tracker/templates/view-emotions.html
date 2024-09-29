@@ -21,14 +21,15 @@
         }
 
         .chart-container {
-            width: 80%;
-            max-width: 800px;
+            width: 90%; /* Increase the width percentage */
+            max-width: 1200px; /* Increase the maximum width */
             margin: 20px auto;
-            padding: 20px;
+            padding: 30px; /* Adjust padding if needed */
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+
 
         table {
             width: 100%;
@@ -85,35 +86,6 @@
         <canvas id="emotionChart"></canvas>
     </div>
 
-    <div class="chart-container">
-        <h2>Emotion Table</h2>
-        <table>
-            <tr>
-                <th>Date</th>
-                <th>Emotion</th>
-            </tr>
-            {% for date, emotion in data %}
-            <tr>
-                <td>{{ date }}</td>
-                <td>
-                    {% if emotion == 1 %}
-                        😡 Angry
-                    {% elif emotion == 2 %}
-                        😟 Sad
-                    {% elif emotion == 3 %}
-                        😐 Neutral
-                    {% elif emotion == 4 %}
-                        😊 Happy
-                    {% elif emotion == 5 %}
-                        😄 Excited
-                    {% else %}
-                        Unknown
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
 
     <!-- Button to submit another emotion -->
     <a href="{{ url_for('index') }}" class="btn">Submit Another Emotion</a>
@@ -127,11 +99,11 @@
         // Create the gradient function for the y-axis
         function getGradient(ctx, chartArea) {
             const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top); // Vertical gradient
-            gradient.addColorStop(0, 'red');   // Angry
-            gradient.addColorStop(0.25, 'orange'); // Sad
-            gradient.addColorStop(0.5, 'yellow'); // Neutral
-            gradient.addColorStop(0.75, 'lightgreen'); // Happy
-            gradient.addColorStop(1, 'green');  // Excited
+            gradient.addColorStop(0, '#f25f4c');   // Angry
+            gradient.addColorStop(0.25, '#ff8906'); // Sad
+            gradient.addColorStop(0.5, '#fde24f'); // Neutral
+            gradient.addColorStop(0.75, '#c3f0ca'); // Happy
+            gradient.addColorStop(1, '#2cb67d');  // Excited
             return gradient;
         }
     
