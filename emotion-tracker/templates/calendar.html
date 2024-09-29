@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Mood Calendar</title>
+    <style>
+        body {
+            font-family: 'Baloo 2', cursive;
+            background-color: #fef6e4;
+            text-align: center;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr); /* 7 columns for days of the week */
+            gap: 10px;
+            padding: 20px;
+        }
+        .day {
+            border: 1px solid #ccc;
+            height: 100px; /* Set a fixed height for each day */
+            position: relative; /* For positioning the emoji */
+        }
+        .emoji {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Mood Calendar</h1>
+    <div class="calendar">
+        {% for day in range(1, 32) %}  <!-- Adjust for the number of days in the month -->
+            <div class="day" style="background-color: {{ emotion_colors.get(calendar_data.get(current_month ~ '-' ~ current_year ~ '-' ~ '%02d' % day), '#ffffff') }}">
+                <div>{{ day }}</div>  <!-- Display the day of the month -->
+                {% if calendar_data.get(current_month ~ '-' ~ current_year ~ '-' ~ '%02d' % day) %}
+                    <div class="emoji">{{ calendar_data.get(current_month ~ '-' ~ current_year ~ '-' ~ '%02d' % day) }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

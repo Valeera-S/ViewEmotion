@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2&family=Pangolin&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%; 
+            overflow: hidden; 
+        }
+        
+        body {
+            font-family: 'Baloo 2', cursive;
+            background-color: #fef6e4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #001858;
+        }
+
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #001858;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        a:hover {
+            background-color: #ff6f61;
+        }
+
+        @keyframes diagonalSlideInBot  {
+            0% {
+                transform: translate(100%, 100%) rotate(310deg); 
+            }
+            100% {
+                transform: translate(0, 0) rotate(350deg); 
+            }
+        }
+
+        .bottom-right-image {
+            position: absolute;
+            bottom: -100px;
+            right: -160px;
+            width: 600px;
+            height: auto;
+            clip-path: inset(0% 0% 0 0); 
+            animation: diagonalSlideInBot 3s ease-in-out forwards;  
+        }
+
+        @keyframes diagonalSlideInTop  {
+            0% {
+                transform: translate(-100%, -100%) rotate(180deg); 
+            }
+            100% {
+                transform: translate(0, 0) rotate(170deg); 
+            }
+        }
+
+        .top-left-image {
+            position: absolute;
+            top: -80px;
+            left: -80px;
+            width: 400px;
+            height: auto;
+            clip-path: inset(0% 0% 0 0); 
+            animation: diagonalSlideInTop 3s ease-in-out forwards;  
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Thank You for Submitting Your Feelings!</h1>
+    <p>Your feelings have been recorded.</p>
+
+    <!-- Link to the view-emotions page -->
+    <a href="{{ url_for('view_emotions') }}">View Your Emotion Records</a>
+
+    <img src="{{ url_for('static', filename='bluebird-removebg-preview.png') }}" alt="WaveBye" class="bottom-right-image">
+    <img src="{{ url_for('static', filename='orangebird-removebg-preview.png') }}" alt="WaveBye" class="top-left-image">
+     
+</body>
+</html>

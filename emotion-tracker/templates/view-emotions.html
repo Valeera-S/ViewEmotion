@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Emotions</title>
+    <!-- Include Chart.js via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Baloo 2', cursive;
+            background-color: #fef6e4;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #001858;
+        }
+
+        .chart-container {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #001858;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Button to navigate back or submit another emotion */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #001858;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background-color: #ff6f61;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Your Emotion Records</h1>
+
+    <div class="chart-container">
+        <canvas id="emotionChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+        <h2>Emotion Table</h2>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Emotion</th>
+            </tr>
+            {% for date, emotion in data %}
+            <tr>
+                <td>{{ date }}</td>
+                <td>
+                    {% if emotion == 1 %}
+                        😡 Angry
+                    {% elif emotion == 2 %}
+                        😟 Sad
+                    {% elif emotion == 3 %}
+                        😐 Neutral
+                    {% elif emotion == 4 %}
+                        😊 Happy
+                    {% elif emotion == 5 %}
+                        😄 Excited
+                    {% else %}
+                        Unknown
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- Button to submit another emotion -->
+    <a href="{{ url_for('index') }}" class="btn">Submit Another Emotion</a>
+
+    <!-- Chart.js Script to generate the chart -->
+    <script>
+        // Use full timestamps for labels (passed from Flask)
+        const labels = {{ dates | tojson }};
+        const emotionsData = {{ emotions | tojson }};
+        
+        // Create the gradient function for the y-axis
+        function getGradient(ctx, chartArea) {
+            const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top); // Vertical gradient
+            gradient.addColorStop(0, 'red');   // Angry
+            gradient.addColorStop(0.25, 'orange'); // Sad
+            gradient.addColorStop(0.5, 'yellow'); // Neutral
+            gradient.addColorStop(0.75, 'lightgreen'); // Happy
+            gradient.addColorStop(1, 'green');  // Excited
+            return gradient;
+        }
+    
+        const config = {
+            type: 'line',
+            data: {
+                labels: labels,  // Use full timestamps for the x-axis
+                datasets: [{
+                    label: 'Emotions Over Time',
+                    data: emotionsData,
+                    fill: false,
+                    tension: 0.1,
+                    pointBackgroundColor: 'rgb(75, 192, 192)',
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                onClick: function(event, elements) {
+                    // Detect the clicked point
+                    if (elements.length > 0) {
+                        const element = elements[0];
+                        const index = element.index; // Get the index of the clicked point
+                        const clickedTimestamp = labels[index]; // Get the full timestamp
+    
+                        // Redirect to the notes page for the clicked timestamp
+                        window.location.href = `/view-notes/${encodeURIComponent(clickedTimestamp)}`;
+                    }
+                },
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Emotions',
+                            font: {
+                                family: 'Baloo 2',
+                                size: 14
+                            }
+                        },
+                        ticks: {
+                            min: 1,
+                            max: 5,
+                            stepSize: 1,
+                            font: {
+                                family: 'Baloo 2',
+                                size: 14
+                            },
+                            callback: function(value) {
+                                const emotionsMap = {
+                                    1: '😡 Angry',
+                                    2: '😟 Sad',
+                                    3: '😐 Neutral',
+                                    4: '😊 Happy',
+                                    5: '😄 Excited'
+                                };
+                                return emotionsMap[value] || value;
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Timestamps',
+                            font: {
+                                family: 'Baloo 2',
+                                size: 14
+                            }
+                        },
+                        ticks: {
+                            font: {
+                                family: 'Baloo 2',
+                                size: 14
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                family: 'Baloo 2',
+                                size: 14
+                            },
+                            boxWidth: 0, // Remove the green box around the legend
+                            padding: 20 // Add some space around the legend
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const emotionsMap = {
+                                    1: '😡 Angry',
+                                    2: '😟 Sad',
+                                    3: '😐 Neutral',
+                                    4: '😊 Happy',
+                                    5: '😄 Excited'
+                                };
+                                return emotionsMap[context.parsed.y] || context.parsed.y;
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    onComplete: function() {
+                        const chart = emotionChart;
+                        const ctx = chart.ctx;
+                        const chartArea = chart.chartArea;
+    
+                        // Apply the gradient before drawing
+                        chart.data.datasets[0].borderColor = getGradient(ctx, chartArea);
+                        chart.update();
+                    }
+                }
+            },
+            plugins: [{
+                beforeDraw: function(chart) {
+                    const ctx = chart.ctx;
+                    const chartArea = chart.chartArea;
+    
+                    // Apply the gradient right before the chart is drawn
+                    chart.data.datasets[0].borderColor = getGradient(ctx, chartArea);
+                }
+            }]
+        };
+    
+        const emotionChart = new Chart(
+            document.getElementById('emotionChart'),
+            config
+        );
+    </script>    
+
+</body>
+</html>

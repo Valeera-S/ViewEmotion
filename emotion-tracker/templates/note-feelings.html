@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note Your Feelings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Baloo 2', cursive;
+            background-color: #fef6e4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #001858;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input, textarea {
+            margin: 10px;
+            padding: 10px;
+            width: 300px;
+            border: 2px solid #001858;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #001858;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #ff6f61;
+        }
+    </style>
+</head>
+<body>
+    <h1>Note Your Feelings</h1>
+    <!-- Use url_for for form submission route -->
+    <form action="{{ url_for('submit_feeling') }}" method="POST">
+        <label for="feeling">How are you feeling?</label>
+        <input type="text" id="feeling" name="feeling" value="{{ emotion }}" required>
+
+        <label for="note">Leave a note:</label>
+        <textarea id="note" name="note" rows="4" placeholder="Write your thoughts..."></textarea>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        // The 'emotion' variable is passed from Flask and pre-filled in the input field
+        // No need for additional JavaScript here
+    </script>
+</body>
+</html>
