@@ -1,44 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Your Emotion Tracker</title>
-    
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2&family=Pangolin&display=swap" rel="stylesheet">
-</head>
 
-<body>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='index.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2&family=Pangolin&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <header>
+      <h1>Duckling Days</h1>
+      <h2>Let's quack the day away</h2>
+    </header>
+
+    <style>
+        body {
+            text-align: center; 
+            margin: 0;
+            padding: 0;
+            background-color: #fef6e4; 
+        }
+    
+        header {
+            padding: 20px;
+            background-color: #001858; 
+            color: white;
+        }
+    
+        #header-image {
+            display: block;
+            margin: 0 auto; 
+            max-width: 100%; 
+            height: auto;
+        }
+    
+        h1, h2 {
+            margin: 0;
+            padding: 10px 0;
+            font-family: 'Baloo 2', cursive; 
+        }
+    
+        h1 {
+            font-size: 3rem; 
+        }
+    
+        h2 {
+            font-size: 1.5rem; 
+        }
+    </style>
+    
+
     <h1 id="Header">How are you feeling today?</h1>
-    
+
     <div class="image-container">
-        
-        <a href="{{ url_for('note_feelings', emotion='happy') }}">
-            <img src="{{ url_for('static', filename='1-removebg-preview.png') }}" alt="Happy Emotion" class="emotion-img">
-        </a>
+      <a href="{{ url_for('note_feelings', emotion='happy') }}">
+        <img
+          src="{{ url_for('static', filename='1-removebg-preview.png') }}"
+          alt="Happy Emotion"
+          class="emotion-img"
+        />
+      </a>
 
-        <a href="{{ url_for('note_feelings', emotion='excited') }}">
-            <img src="{{ url_for('static', filename='2-removebg-preview.png') }}" alt="Excited Emotion" class="emotion-img">
-        </a>
+      <a href="{{ url_for('note_feelings', emotion='excited') }}">
+        <img
+          src="{{ url_for('static', filename='2-removebg-preview.png') }}"
+          alt="Excited Emotion"
+          class="emotion-img"
+        />
+      </a>
 
-        <a href="{{ url_for('note_feelings', emotion='angry') }}">
-            <img src="{{ url_for('static', filename='3-removebg-preview.png') }}" alt="Angry Emotion" class="emotion-img">
-        </a>
+      <a href="{{ url_for('note_feelings', emotion='angry') }}">
+        <img
+          src="{{ url_for('static', filename='3-removebg-preview.png') }}"
+          alt="Angry Emotion"
+          class="emotion-img"
+        />
+      </a>
 
-        <a href="{{ url_for('note_feelings', emotion='sad') }}">
-            <img src="{{ url_for('static', filename='4-removebg-preview.png') }}" alt="Sad Emotion" class="emotion-img">
-        </a>
+      <a href="{{ url_for('note_feelings', emotion='sad') }}">
+        <img
+          src="{{ url_for('static', filename='4-removebg-preview.png') }}"
+          alt="Sad Emotion"
+          class="emotion-img"
+        />
+      </a>
 
-        <a href="{{ url_for('note_feelings', emotion='neutral') }}">
-            <img src="{{ url_for('static', filename='5-removebg-preview.png') }}" alt="Neutral Emotion" class="emotion-img">
-        </a>
+      <a href="{{ url_for('note_feelings', emotion='neutral') }}">
+        <img
+          src="{{ url_for('static', filename='5-removebg-preview.png') }}"
+          alt="Neutral Emotion"
+          class="emotion-img"
+        />
+      </a>
     </div>
 
     <a href="{{ url_for('calendar_view') }}">View Your Calendar</a>
-</body>
+  </body>
 </html>
-
-
-
-
