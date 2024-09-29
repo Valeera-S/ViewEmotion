@@ -52,7 +52,7 @@
 </head>
 <body>
     <h1>Note Your Feelings</h1>
-    <!-- Use url_for for form submission route -->
+    
     <form action="{{ url_for('submit_feeling') }}" method="POST">
         <label for="feeling">How are you feeling?</label>
         <input type="text" id="feeling" name="feeling" value="{{ emotion }}" required>
@@ -64,8 +64,7 @@
     </form>
 
     <script>
-        // The 'emotion' variable is passed from Flask and pre-filled in the input field
-        // No need for additional JavaScript here
+
     </script>
 </body>
 </html>

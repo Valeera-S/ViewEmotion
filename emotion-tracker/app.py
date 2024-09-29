@@ -40,7 +40,6 @@ def note_feelings():
     emotion = request.args.get('emotion', '')
     return render_template('note-feelings.html', emotion=emotion)
 
-# Route to handle the form submission
 @app.route('/submit', methods=['POST'])
 def submit_feeling():
     emotion = request.form['feeling']

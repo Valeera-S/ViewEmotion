@@ -58,7 +58,7 @@
             width: 600px;
             height: auto;
             clip-path: inset(0% 0% 0 0); 
-            animation: diagonalSlideInBot 3s ease-in-out forwards;  
+            animation: diagonalSlideInBot 1s ease-in-out forwards;  
         }
 
         @keyframes diagonalSlideInTop  {
@@ -77,7 +77,7 @@
             width: 400px;
             height: auto;
             clip-path: inset(0% 0% 0 0); 
-            animation: diagonalSlideInTop 3s ease-in-out forwards;  
+            animation: diagonalSlideInTop 1s ease-in-out forwards;  
         }
 
     </style>
@@ -86,7 +86,6 @@
     <h1>Thank You for Submitting Your Feelings!</h1>
     <p>Your feelings have been recorded.</p>
 
-    <!-- Link to the view-emotions page -->
     <a href="{{ url_for('view_emotions') }}">View Your Emotion Records</a>
 
     <img src="{{ url_for('static', filename='bluebird-removebg-preview.png') }}" alt="WaveBye" class="bottom-right-image">

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Emotions</title>
-    <!-- Include Chart.js via CDN -->
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
     <style>
@@ -21,10 +21,10 @@
         }
 
         .chart-container {
-            width: 90%; /* Increase the width percentage */
-            max-width: 1200px; /* Increase the maximum width */
+            width: 90%; 
+            max-width: 1200px; 
             margin: 20px auto;
-            padding: 30px; /* Adjust padding if needed */
+            padding: 30px;
             background-color: white;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -61,7 +61,6 @@
             background-color: #f9f9f9;
         }
 
-        /* Button to navigate back or submit another emotion */
         .btn {
             display: inline-block;
             padding: 10px 20px;
@@ -86,31 +85,26 @@
         <canvas id="emotionChart"></canvas>
     </div>
 
-
-    <!-- Button to submit another emotion -->
     <a href="{{ url_for('index') }}" class="btn">Submit Another Emotion</a>
 
-    <!-- Chart.js Script to generate the chart -->
     <script>
-        // Use full timestamps for labels (passed from Flask)
         const labels = {{ dates | tojson }};
         const emotionsData = {{ emotions | tojson }};
         
-        // Create the gradient function for the y-axis
         function getGradient(ctx, chartArea) {
-            const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top); // Vertical gradient
-            gradient.addColorStop(0, '#f25f4c');   // Angry
-            gradient.addColorStop(0.25, '#ff8906'); // Sad
-            gradient.addColorStop(0.5, '#fde24f'); // Neutral
-            gradient.addColorStop(0.75, '#c3f0ca'); // Happy
-            gradient.addColorStop(1, '#2cb67d');  // Excited
+            const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top); 
+            gradient.addColorStop(0, '#f25f4c');
+            gradient.addColorStop(0.25, '#ff8906'); 
+            gradient.addColorStop(0.5, '#fde24f'); 
+            gradient.addColorStop(0.75, '#c3f0ca'); 
+            gradient.addColorStop(1, '#2cb67d');  
             return gradient;
         }
     
         const config = {
             type: 'line',
             data: {
-                labels: labels,  // Use full timestamps for the x-axis
+                labels: labels,  
                 datasets: [{
                     label: 'Emotions Over Time',
                     data: emotionsData,
@@ -123,13 +117,12 @@
             },
             options: {
                 onClick: function(event, elements) {
-                    // Detect the clicked point
+                    
                     if (elements.length > 0) {
                         const element = elements[0];
-                        const index = element.index; // Get the index of the clicked point
-                        const clickedTimestamp = labels[index]; // Get the full timestamp
+                        const index = element.index; 
+                        const clickedTimestamp = labels[index]; 
     
-                        // Redirect to the notes page for the clicked timestamp
                         window.location.href = `/view-notes/${encodeURIComponent(clickedTimestamp)}`;
                     }
                 },
@@ -187,8 +180,8 @@
                                 family: 'Baloo 2',
                                 size: 14
                             },
-                            boxWidth: 0, // Remove the green box around the legend
-                            padding: 20 // Add some space around the legend
+                            boxWidth: 0, 
+                            padding: 20 
                         }
                     },
                     tooltip: {
@@ -211,8 +204,7 @@
                         const chart = emotionChart;
                         const ctx = chart.ctx;
                         const chartArea = chart.chartArea;
-    
-                        // Apply the gradient before drawing
+                        
                         chart.data.datasets[0].borderColor = getGradient(ctx, chartArea);
                         chart.update();
                     }
@@ -223,7 +215,6 @@
                     const ctx = chart.ctx;
                     const chartArea = chart.chartArea;
     
-                    // Apply the gradient right before the chart is drawn
                     chart.data.datasets[0].borderColor = getGradient(ctx, chartArea);
                 }
             }]
