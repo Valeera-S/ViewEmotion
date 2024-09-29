@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
+from datetime import datetime
+import calendar
 
 app = Flask(__name__)
 
@@ -70,13 +72,29 @@ def view_notes(timestamp):
     conn = sqlite3.connect('emotions.db')
     cursor = conn.cursor()
 
-    # Select emotion and note for the provided timestamp
+    # Select emotion and note for the provided exact timestamp
     cursor.execute('SELECT emotion, note FROM emotions WHERE timestamp = ?', (timestamp,))
     notes = cursor.fetchall()
     conn.close()
 
     # Render the notes on the view_notes.html page
     return render_template('view-notes.html', timestamp=timestamp, notes=notes)
+
+@app.route('/view-notes-by-date/<date>', methods=['GET'])
+def view_notes_by_date(date):
+    conn = sqlite3.connect('emotions.db')
+    cursor = conn.cursor()
+
+    # Select emotion and note for the provided date (matching only the date part)
+    cursor.execute('''
+        SELECT emotion, note 
+        FROM emotions 
+        WHERE DATE(timestamp) = ?
+    ''', (date,))
+    notes = cursor.fetchall()
+    conn.close()
+
+    return render_template('view-notes.html', date=date, notes=notes)
 
 
 @app.route('/view')
@@ -111,16 +129,9 @@ def view_emotions():
     return render_template('view-emotions.html', dates=timestamps, emotions=emotions)
 
 
-emotion_colors = {
-    'happy': '#FFD700',  # Gold
-    'excited': '#FF4500',  # Orange Red
-    'angry': '#FF0000',  # Red
-    'sad': '#1E90FF',  # Dodger Blue
-    'calm': '#3CB371',  # Medium Sea Green
-}
-
-@app.route('/calendar', methods=['GET', 'POST'])
-def calendar():
+# Change the route and function name from 'calendar' to something like 'calendar_view'
+@app.route('/calendar-view', methods=['GET', 'POST'])
+def calendar_view():
     # Get the selected month and year from the form
     selected_month = request.args.get('month', None)
     selected_year = request.args.get('year', None)
@@ -130,6 +141,10 @@ def calendar():
         today = datetime.today()
         selected_month = today.strftime('%m')
         selected_year = today.strftime('%Y')
+
+    # Convert selected month and year to integers for further processing
+    selected_month_int = int(selected_month)
+    selected_year_int = int(selected_year)
 
     # Retrieve all notes from the database for the selected month and year
     conn = sqlite3.connect('emotions.db')
@@ -146,10 +161,39 @@ def calendar():
     for date, emotion in notes:
         calendar_data[date] = emotion
 
-    return render_template('calendar.html', calendar_data=calendar_data, emotion_colors=emotion_colors, selected_month=selected_month, selected_year=selected_year)
-    
+    # Get the number of days in the selected month
+    num_days = calendar.monthrange(selected_year_int, selected_month_int)[1]
+
+    # Define emotion to color mapping
+    emotion_colors = {
+        'happy': '#FFD700',   # Gold
+        'excited': '#FF4500', # OrangeRed
+        'angry': '#FF0000',   # Red
+        'sad': '#1E90FF',     # DodgerBlue
+        'calm': '#32CD32'     # LimeGreen
+    }
+
+    # Define emotion to emoji mapping
+    emotion_emojis = {
+        'happy': '😊',
+        'excited': '🏎',
+        'angry': '😡',
+        'sad': '😢',
+        'calm': '😌',
+    }
+
+    return render_template('calendar.html', 
+                           calendar_data=calendar_data, 
+                           emotion_colors=emotion_colors, 
+                           emotion_emojis=emotion_emojis,
+                           selected_month=selected_month, 
+                           selected_year=selected_year,
+                           num_days=num_days)
+
+
+
 if __name__ == '__main__':
-    init_db()  # Ensure the database is initialized
+    init_db() 
     app.run(debug=True)
 
 
